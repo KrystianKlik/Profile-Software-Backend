@@ -27,6 +27,9 @@ class Prompt:
 
 class Text(Prompt):
 
+    def __repr__(self):
+        return f"Your points: {self.name}"
+
     def counting_scores(self):
 
         self.scrabble_scores()
@@ -63,10 +66,8 @@ class Text(Prompt):
 
         return dictionary
 
-    def biggestValue(self, counting_scores):
-        """ a) create a list of the dict's keys and values;
-            b) return the key with the max value"""
 
+    def biggestValue(self, counting_scores):
         v=list(counting_scores.values())
         k=list(counting_scores.keys())
         maxValues = [i for i, x in enumerate(v) if x == max(v)]
@@ -81,6 +82,7 @@ class Text(Prompt):
             if int(score) == v[i]:
                 print(f'Word: {k[i]}')
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('type', help="If it's a file with extension .txt write [txt] on prompt write word [prompt]")
 parser.add_argument('source', help="Type text in prompt or name of .txt file, note to make it easier file must be in the same folder as script")
@@ -93,16 +95,21 @@ if args.type == "prompt":
     instance = Prompt(name)
     instance.counting_scores()
 
+
 elif args.type == "txt" and args.source == "dictionary":
-    a = Text(name)
-    p = a.counting_scores()
-    a.biggestValue(p)
+        instance = Text(name)
+        counting_scores_function = instance.counting_scores()
+        instance.biggestValue(counting_scores_function)
 
 elif args.type == "txt":
-    print(Text(name))
-    a = Text(name)
-    p = a.counting_scores()
-    a.findPoints(p, name)
+    try:
+        print(Text(name))
+        instance = Text(name)
+        counting_scores_function = instance.counting_scores()
+        instance.findPoints(counting_scores_function, name)
+    except:
+        print('You need to give a proper number or check if you wrote word dictionary correctly')
+
 
 else:
-    print("Wrong value if you don't know how to handle this check --help")
+    print("Wrong value if you don't know how to handle this check [--help]")
