@@ -1,5 +1,6 @@
 import argparse
 
+
 class Prompt:
     def __init__(self, name):
         self.name = name
