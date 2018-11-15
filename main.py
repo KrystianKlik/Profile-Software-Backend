@@ -84,33 +84,40 @@ class Text(Prompt):
                 print(f'Word: {k[i]}')
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('type', help="If it's a file with extension .txt write [txt] on prompt write word [prompt]")
-parser.add_argument('source', help="Type text in prompt or name of .txt file, note to make it easier file must be in the same folder as script")
-args = parser.parse_args()
 
-name = args.source
+def create_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('type', help="If it's a file with extension .txt write [txt] on prompt write word [prompt]")
+    parser.add_argument('source', help="Type text in prompt or name of .txt file, note to make it easier file must be in the same folder as script")
+    args = parser.parse_args()
+    return args
 
-if args.type == "prompt":
-    print(Prompt(name))
-    instance = Prompt(name)
-    instance.counting_scores()
+args = create_parser()
 
-
-elif args.type == "txt" and args.source == "dictionary":
-        instance = Text(name)
-        counting_scores_function = instance.counting_scores()
-        instance.biggestValue(counting_scores_function)
-
-elif args.type == "txt":
-    try:
-        print(Text(name))
-        instance = Text(name)
-        counting_scores_function = instance.counting_scores()
-        instance.findPoints(counting_scores_function, name)
-    except:
-        print('You need to give a proper number or check if you wrote word dictionary correctly')
+def arguments(type, source):
+    if type == "prompt":
+        print(Prompt(source))
+        instance = Prompt(source)
+        instance.counting_scores()
 
 
-else:
-    print("Wrong value if you don't know how to handle this check [--help]")
+    elif type == "txt" and args.source == "dictionary":
+            instance = Text(source)
+            counting_scores_function = instance.counting_scores()
+            instance.biggestValue(counting_scores_function)
+
+    elif type == "txt":
+        try:
+            print(Text(source))
+            instance = Text(source)
+            counting_scores_function = instance.counting_scores()
+            instance.findPoints(counting_scores_function, source)
+        except:
+            print('You need to give a proper number or check if you wrote word dictionary correctly')
+
+
+    else:
+        print("Wrong value if you don't know how to handle this check [--help]")
+
+create_parser()
+arguments(args.type, args.source)
